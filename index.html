@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Простой чат</title>
+    <style>
+        .chat-box {
+            height: 400px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .input-box {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-box" id="chatBox"></div>
+    <div class="input-box">
+        <input type="text" id="messageInput" placeholder="Введите сообщение">
+        <button onclick="sendMessage()">Отправить</button>
+    </div>
+
+    <script>
+        var chatBox = document.getElementById("chatBox");
+        var messageInput = document.getElementById("messageInput");
+
+        function sendMessage() {
+            var message = messageInput.value;
+            if (message !== "") {
+                var messageElement = document.createElement("p");
+                messageElement.textContent = message;
+                chatBox.appendChild(messageElement);
+                messageInput.value = "";
+            }
+        }
+    </script>
+</body>
+</html>
