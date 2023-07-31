@@ -2,45 +2,30 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Конвертер .py в .exe</title>
+    <title>Кликер с магазином и сохранениями</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Подключение CSS стилей -->
 </head>
 <body>
-    <h1>Конвертер .py в .exe</h1>
-    <label for="pyFile">Выберите файл .py для конвертации:</label>
-    <input type="file" id="pyFile">
-    <button onclick="convertToExe()">Конвертировать</button>
-    <p id="output"></p>
-
-    <script>
-        function convertToExe() {
-            var fileInput = document.getElementById('pyFile');
-            var file = fileInput.files[0];
-            if (file && file.name.endsWith('.py')) {
-                var formData = new FormData();
-                formData.append('py_file', file);
-
-                fetch('/convert', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('output').innerText = 'Файл .exe успешно создан. ' + 
-                                                                      'Скачать: ' + data.exe_file;
-                    } else {
-                        document.getElementById('output').innerText = 'Ошибка при конвертации файла.';
-                    }
-                })
-                .catch(error => {
-                    console.error('Ошибка:', error);
-                    document.getElementById('output').innerText = 'Ошибка при выполнении запроса.';
-                });
-            } else {
-                document.getElementById('output').innerText = 'Выберите файл .py для конвертации.';
-            }
-        }
-    </script>
+    <div class="container">
+        <h1>Кликер</h1>
+        <p>Кликайте на кнопку, чтобы заработать монеты!</p>
+        <button id="clickButton">Кликните здесь!</button>
+        <p>У вас <span id="coins">0</span> монет.</p>
+        <hr>
+        <h2>Магазин</h2>
+        <ul id="shop">
+            <li>
+                <button onclick="buyUpgrade(10, 1)">Улучшение 1 - цена: 10 монет</button>
+            </li>
+            <li>
+                <button onclick="buyUpgrade(50, 5)">Улучшение 2 - цена: 50 монет</button>
+            </li>
+        </ul>
+        <button onclick="saveGame()">Сохранить прогресс</button>
+        <button onclick="loadGame()">Загрузить прогресс</button>
+    </div>
+    <script src="script.js"></script> <!-- Подключение JavaScript скрипта -->
 </body>
 </html>
+
 
