@@ -1,40 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Простой чат</title>
-    <style>
-        .chat-box {
-            height: 400px;
-            overflow-y: scroll;
-            border: 1px solid #ccc;
-            padding: 10px;
-        }
-
-        .input-box {
-            margin-top: 10px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <title>Конвертер .py в .exe</title>
 </head>
 <body>
-    <div class="chat-box" id="chatBox"></div>
-    <div class="input-box">
-        <input type="text" id="messageInput" placeholder="Введите сообщение">
-        <button onclick="sendMessage()">Отправить</button>
-    </div>
+    <h1>Конвертер .py в .exe</h1>
+    <label for="pyFile">Выберите файл .py для конвертации:</label>
+    <input type="file" id="pyFile">
+    <button onclick="convertToExe()">Конвертировать</button>
+    <p id="output"></p>
 
     <script>
-        var chatBox = document.getElementById("chatBox");
-        var messageInput = document.getElementById("messageInput");
+        function convertToExe() {
+            var fileInput = document.getElementById('pyFile');
+            var file = fileInput.files[0];
+            if (file && file.name.endsWith('.py')) {
+                var formData = new FormData();
+                formData.append('py_file', file);
 
-        function sendMessage() {
-            var message = messageInput.value;
-            if (message !== "") {
-                var messageElement = document.createElement("p");
-                messageElement.textContent = message;
-                chatBox.appendChild(messageElement);
-                messageInput.value = "";
+                fetch('/convert', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('output').innerText = 'Файл .exe успешно создан. ' + 
+                                                                      'Скачать: ' + data.exe_file;
+                    } else {
+                        document.getElementById('output').innerText = 'Ошибка при конвертации файла.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    document.getElementById('output').innerText = 'Ошибка при выполнении запроса.';
+                });
+            } else {
+                document.getElementById('output').innerText = 'Выберите файл .py для конвертации.';
             }
         }
     </script>
 </body>
 </html>
+
